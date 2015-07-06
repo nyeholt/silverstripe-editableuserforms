@@ -1,0 +1,23 @@
+{
+	"name": "silverstripe-australia/editableuserforms",
+	"description": "Adds the ability to re-edit user form submissions, allowing users to come back to finish submissions",
+	"type": "silverstripe-module",
+	"keywords": ["silverstripe", "formfield", "userforms"],
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Marcus Nyeholt",
+			"email": "marcus@silverstripe.com.au"
+		}
+	],
+	"require": {
+		"silverstripe/userforms": "~2.0",
+		"unclecheese/dropzone": "dev-master"
+	},
+	"extra": {
+		"branch-alias": {
+			"dev-master": "1.0.x-dev"
+		},
+		"installer-name": "editableuserforms"
+	}
+}
