@@ -230,6 +230,9 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller {
 
 	public function Form() {
 		$form = parent::Form();
+		if (!$form) {
+			return;
+		}
 		if ($this->ShowButtonsOnTop) {
 			$form->ShowButtonsOnTop = true;
 		}
