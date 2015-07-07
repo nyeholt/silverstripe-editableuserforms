@@ -7,6 +7,8 @@
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
 class EditableSubmissionExtension extends DataExtension {
+	
+	private static $better_buttons_enabled = false;
 
 	private static $db = array(
 		'SubmissionTitle'		=> 'Varchar(255)',

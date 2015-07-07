@@ -2,7 +2,6 @@
 Name: submitted_forms
 ---
 SubmittedForm:
-  better_buttons_enabled: 0
   extensions:
     - EditableSubmissionExtension
 
