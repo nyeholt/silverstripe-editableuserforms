@@ -1,0 +1,41 @@
+en:
+  EditableEmailFieldWithDefault:
+    PLURALNAME: 'Email fields with default'
+    SINGULARNAME: 'Email field with default'
+  EditableMaskedTextField:
+    PLURALNAME: 'Masked Text fields'
+    SINGULARNAME: 'Masked Text field'
+  EditableMaskedTextFieldWithDefault:
+    MASK: Mask
+    MASK_INSTRUCTIONS: 'Example: 99/99/9999 <ul><li>a - Represents an alpha character (A-Z,a-z)</li><li>9 - Represents a numeric character (0-9)</li><li>* - Represents an alphanumeric character (A-Z,a-z,0-9)</li></ul>'
+  EditableMultiFileField:
+    PLURALNAME: 'Multi File Upload Fields'
+    SINGULARNAME: 'Multi File Upload Field'
+  EditableSubmittedFormReportField.ss:
+    DELETEALLSUBMISSIONS: 'Delete All Submissions'
+    DELETESUBMISSION: 'Delete Submission'
+    EXPORTSUBMISSIONS: 'Export submissions to CSV'
+    NOSUBMISSIONS: 'No Submissions'
+    SUBMITTED: 'Submitted at'
+  EditableTextFieldWithDefault:
+    DEFAULT_VALUE: 'Default Value'
+    PLURALNAME: 'Text fields with keyword default'
+    SINGULARNAME: 'Text field with keyword default'
+  EditableUploadField:
+    SELECTUPLOADFOLDER: 'Select upload folder'
+  EditableUserDefinedForm:
+    DESCRIPTION: 'Adds a customizable form.'
+    PLURALNAME: 'Editable User Defined Forms'
+    SINGULARNAME: 'Editable User Defined Form'
+  FormSaveField:
+    PLURALNAME: 'Save buttons'
+    SINGULARNAME: 'Save button'
+  SetPropertyAction:
+    PLURALNAME: 'Set Property Actions'
+    SINGULARNAME: 'Set Property Action'
+  SiteTree:
+    PLURALNAME: Pages
+    SINGULARNAME: Page
+  SubmittedMultiFileField:
+    PLURALNAME: 'Submitted Multi File Fields'
+    SINGULARNAME: 'Submitted Multi File Field'
