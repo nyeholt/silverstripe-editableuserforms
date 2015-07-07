@@ -21,11 +21,13 @@ class EditableMultiFileField extends EditableFormField {
 		);
 
 		$tree->setValue($folder);
-
 		$fields->push($tree);
+
+		$randomise = ($this->getSetting('Obfuscate')) ? $this->getSetting('Obfuscate') : null;
+		$cb = CheckboxField::create($this->getSettingName('Obfuscate'), 'Obfuscate upload folder - provides some hiding of uploaded files', $randomise);
+		$fields->push($cb);
 		
 		$multiple = $this->getSetting('MultipleUploads');
-		
 		$cb = CheckboxField::create($this->getSettingName("MultipleUploads"), 'Allow multiple uploads');
 		$cb->setValue($multiple ? true : false);
 		
@@ -47,6 +49,12 @@ class EditableMultiFileField extends EditableFormField {
 					preg_replace("/^assets\//","", $folder->Filename)
 				);
 			}
+		}
+		
+		if ($this->getSetting('Obfuscate')) {
+			$folder = rtrim($field->getFolderName(), '/');
+			$folder .= '/' . md5(time() + mt_rand());
+			$field->setFolderName($folder);
 		}
 		
 		if ($this->getSetting('MultipleUploads')) {
