@@ -519,7 +519,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller {
 		}
 		
 		$referrer = (isset($data['Referrer'])) ? '?referrer=' . urlencode($data['Referrer']) : "";
-		return $this->redirect($this->Link() . $referrer);
+		return $this->redirect($this->Link('finished') . $referrer . $this->config()->finished_anchor);
 	}
 
 
