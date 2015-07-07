@@ -1,11 +1,12 @@
 <?php
+
 /**
  * A text field that supports masking
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class MaskedTextField extends TextField
-{
+class MaskedTextField extends TextField {
+
 	/**
 	 * A Mask used for describing how the form should appear
 	 *
@@ -22,7 +23,7 @@ class MaskedTextField extends TextField
 	/**
 	 * Returns an input field, class="text" and type="text" with an optional maxlength
 	 */
-	function __construct($name, $title = null, $value = "", $mask = '', $maxLength = null, $form = null){
+	function __construct($name, $title = null, $value = "", $mask = '', $maxLength = null, $form = null) {
 		$this->inputMask = $mask;
 		parent::__construct($name, $title, $value, $maxLength, $form);
 	}
@@ -36,8 +37,8 @@ class MaskedTextField extends TextField
 		$this->inputMask = $mask;
 	}
 
-    public function Field() {
-		$tag = parent::Field();
+	public function Field($properties = array()) {
+		$tag = parent::Field($properties);
 
 		// add in the logic for the masking
 		Requirements::javascript('editableuserforms/javascript/jquery.maskedinput-1.2.2.min.js');
@@ -50,8 +51,10 @@ class MaskedTextField extends TextField
 	});
 })(jQuery);
 JS;
-		Requirements::customScript($js, $id.'JS');
+		Requirements::customScript($js, $id . 'JS');
 		return $tag;
 	}
+
 }
+
 ?>
