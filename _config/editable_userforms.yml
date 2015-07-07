@@ -5,3 +5,12 @@ SubmittedForm:
   better_buttons_enabled: 0
   extensions:
     - EditableSubmissionExtension
+
+---
+Name: submission_worfklow_config
+Only:
+  moduleexists: advancedworkflow
+---
+SubmittedForm:
+  extensions:
+    - WorkflowApplicable
