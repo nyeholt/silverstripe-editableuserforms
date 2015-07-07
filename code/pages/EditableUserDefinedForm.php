@@ -26,6 +26,8 @@ class EditableUserDefinedForm extends UserDefinedForm {
 													// "Draft" submission when they come to the form
 		'SubmitWarning'			=> 'Varchar(255)',	// warning text shown before Submit button goes through
 		
+		'SubmissionTitleField'	=> 'Varchar(255)',		// field to use as submission title
+		
 		'WorkflowID'			=> 'Int',			// a workflow definition to be used for submissions
 	);
 
@@ -55,6 +57,16 @@ class EditableUserDefinedForm extends UserDefinedForm {
 		$fields->addFieldToTab('Root.FormOptions', new CheckboxField('ShowDeleteButton', 'Show the button to delete this form submission'));
 		$fields->addFieldToTab('Root.FormOptions', new CheckboxField('ShowButtonsOnTop', 'Show the form action buttons above the form as well as below'));
 		$fields->addFieldToTab('Root.FormOptions', new CheckboxField('LoadLastSubmission', 'Automatically load the latest incomplete submission when a user visits the form'));
+
+		$formFields = $this->Fields();
+		$options = array();
+		foreach ($formFields as $editableField) {
+			$options[$editableField->Name] = $editableField->Title;
+		}
+		
+		$fields->addFieldToTab('Root.FormOptions', $df = DropdownField::create('SubmissionTitleField', 'Title field to use for new submissions', $options));
+		$df->setEmptyString('-- field --');
+		$df->setRightTitle('Useful if submissions are to be listed somewhere and a sort field is required');
 
 		if (class_exists('WorkflowDefinition')) {
 			$definitions = WorkflowDefinition::get()->map();
@@ -544,6 +556,8 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller {
         $attachments = array();
 
 		$submittedFields = ArrayList::create();
+		
+		$titleField = $this->data()->SubmissionTitleField;
 
 		foreach($this->Fields() as $field) {
 			// don't show fields that shouldn't be shown
@@ -574,6 +588,10 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller {
 				if(isset($data[$field->Name])) {
 					$submittedField->Value = $data[$field->Name];
 				}
+			}
+
+			if ($titleField == $field->Name) {
+				$submittedForm->SubmissionTitle = $submittedField->Value;
 			}
 
 			if(!empty($data[$field->Name])){
