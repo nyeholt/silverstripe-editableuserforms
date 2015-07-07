@@ -16,10 +16,13 @@ class SubmittedMultiFileField extends SubmittedFormField {
 			return $this->attachments;
 		}
 
-		$ids = explode(',', $this->Value);
-		$m = $this->ID;
-		$this->attachments = File::get()->filter('ID', $ids);
-		return $this->attachments;
+		$idStr = trim($this->Value);
+		if (strlen($idStr)) {
+			$ids = explode(',', $idStr);
+			$this->attachments = File::get()->filter(array('ID:ExactMatch' => $ids));
+			return $this->attachments;
+		}
+		return ArrayList::create();
 	}
 
 	/**
