@@ -5,7 +5,7 @@
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class EditableEmailFieldWithDefault extends EditableTextFieldWithDefault
+class EditableEmailFieldWithDefault extends EditableEmailField
 {
     static $singular_name = 'Email field with default';
 
@@ -15,18 +15,15 @@ class EditableEmailFieldWithDefault extends EditableTextFieldWithDefault
 		return 'userforms/images/editableemailfield.png';
 	}
 
-	function getFormField($fieldType='TextField') {
-		return parent::getFormField('EmailField');
+	public function getFieldConfiguration() {
+		$fields = parent::getFieldConfiguration();
+		singleton('DefaultEditableFieldHelper')->updateFieldConfiguration($this, $fields);
+		return $fields;
 	}
-
-	public function getValidation() {
-		$options = array(
-			'email' => true
-		);
-
-		if($this->getSetting('MinLength')) $options['minlength'] = $this->getSetting('MinLength');
-		if($this->getSetting('MaxLength')) $options['maxlength'] = $this->getSetting('MaxLength');
-
-		return $options;
+	
+	function getFormField() {
+		$field = parent::getFormField();
+		$field->setValue(null);
+		return singleton('DefaultEditableFieldHelper')->updateFormField($this, $field);
 	}
 }
