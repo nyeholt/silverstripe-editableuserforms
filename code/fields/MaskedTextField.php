@@ -41,7 +41,7 @@ class MaskedTextField extends TextField {
 		$tag = parent::Field($properties);
 
 		// add in the logic for the masking
-		Requirements::javascript('editableuserforms/javascript/jquery.maskedinput-1.2.2.min.js');
+		Requirements::javascript('editableuserforms/javascript/jquery.maskedinput-1.4.1.min.js');
 		$id = $this->id();
 		$mask = $this->inputMask;
 		$js = <<<JS
