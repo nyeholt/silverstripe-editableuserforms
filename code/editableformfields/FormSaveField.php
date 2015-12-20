@@ -6,55 +6,60 @@
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
-class FormSaveField extends EditableFormField {
+class FormSaveField extends EditableFormField
+{
 
-	static $singular_name = 'Save button';
-	static $plural_name = 'Save buttons';
+    public static $singular_name = 'Save button';
+    public static $plural_name = 'Save buttons';
 
-	public function Icon() {
-		return 'editableuserforms/images/formsavefield.png';
-	}
+    public function Icon()
+    {
+        return 'editableuserforms/images/formsavefield.png';
+    }
 
-	/**
-	 * Return a button for saving this form if the user is logged in
-	 *
-	 * @return FormField
-	 */
-	function getFormField() {
-		if (Member::currentUserID()) {
-			$id = $this->Name;
-			$field = new EditableUserFormSaveButton($id, $this->Title);
-		} else {
-			$field = new LiteralField('NULL', '');
-		}
+    /**
+     * Return a button for saving this form if the user is logged in
+     *
+     * @return FormField
+     */
+    public function getFormField()
+    {
+        if (Member::currentUserID()) {
+            $id = $this->Name;
+            $field = new EditableUserFormSaveButton($id, $this->Title);
+        } else {
+            $field = new LiteralField('NULL', '');
+        }
 
-		return $field;
-	}
-
+        return $field;
+    }
 }
 
 /**
  * Allows users to add multiple save buttons to the form
  */
-class EditableUserFormSaveButton extends DatalessField {
+class EditableUserFormSaveButton extends DatalessField
+{
 
-	protected $text;
+    protected $text;
 
-	function __construct($name, $text) {
-		parent::__construct($name, '');
-		$this->text = $text;
-	}
+    public function __construct($name, $text)
+    {
+        parent::__construct($name, '');
+        $this->text = $text;
+    }
 
-	public function Field($properties = array()) {
-		if ($this->readonly) {
-			return '';
-		}
+    public function Field($properties = array())
+    {
+        if ($this->readonly) {
+            return '';
+        }
 
-		$label = $this->Title();
+        $label = $this->Title();
 
-		$id = $this->name;
-		$title = Convert::raw2htmlatt($this->text);
-		$fieldHtml = <<<HTML
+        $id = $this->name;
+        $title = Convert::raw2htmlatt($this->text);
+        $fieldHtml = <<<HTML
 		<div id="$id" class="field formaction cancel">
 		<label class="left" for="Form_Form_action_storesubmission">$label</label>
 		<div class="middleColumn">
@@ -62,7 +67,6 @@ class EditableUserFormSaveButton extends DatalessField {
 		</div>
 		</div>
 HTML;
-		return $fieldHtml;
-	}
-
+        return $fieldHtml;
+    }
 }
