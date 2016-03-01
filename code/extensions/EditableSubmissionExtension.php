@@ -8,7 +8,7 @@
  */
 class EditableSubmissionExtension extends DataExtension
 {
-    
+
     private static $better_buttons_enabled = false;
 
     private static $db = array(
@@ -16,17 +16,17 @@ class EditableSubmissionExtension extends DataExtension
         'SubmissionStatus'        => "Varchar",
         'SubmissionTime'        => 'SS_Datetime',
     );
-    
+
     private static $defaults = array(
         'SubmissionStatus'        => 'Draft',
     );
-    
+
     public function exposeDataFields($inForm = null)
     {
         foreach ($this->owner->Values() as $submittedField) {
             $fieldName = $submittedField->Name;
             $fieldValue = $submittedField->Value;
-            
+
             // radio / checkbox
             if ($fieldValue == 'No') {
                 $editingField = $inForm ? $inForm->dataFieldByName($fieldName) : $submittedField->getEditableField();
@@ -43,10 +43,10 @@ class EditableSubmissionExtension extends DataExtension
 //			}
         }
     }
-    
-    
+
+
     protected $labelledFieldMap;
-    
+
     public function fieldByLabel($label)
     {
         if (!$this->labelledFieldMap) {
@@ -57,7 +57,7 @@ class EditableSubmissionExtension extends DataExtension
         }
         return isset($this->labelledFieldMap[$label]) ? $this->labelledFieldMap[$label] : null;
     }
-    
+
     /**
      * Set the submission time if needbe
      */
@@ -138,7 +138,7 @@ class EditableSubmissionExtension extends DataExtension
         $parentForm = $this->owner->Parent();
         return $parentForm->Link('printpdf') . '/' . (int) $this->owner->ID . '.pdf';
     }
-    
+
     public function WorkflowLink()
     {
         return "admin/pages/edit/EditForm/field/Submissions/item/{$this->owner->ID}/edit";
@@ -151,7 +151,7 @@ class EditableSubmissionExtension extends DataExtension
     {
         return $this->owner->SubmissionStatus == EditableUserDefinedForm::COMPLETE ? 'Completed ' . date('l jS F \a\t g:ia', strtotime($this->owner->LastEdited)) : 'Draft started ' . date('l jS F \a\t g:ia', strtotime($this->owner->Created));
     }
-    
+
     public function getWorkflowState()
     {
         if ($this->owner->Parent()->WorkflowID && $instance = $this->owner->getWorkflowInstance()) {

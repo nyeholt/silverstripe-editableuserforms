@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 
+ *
  *
  * @author Marcus Nyeholt <marcus@silverstripe.com.au>
  */
@@ -11,7 +11,7 @@ class SetPropertyAction extends WorkflowAction
         'Property'    => 'Varchar',
         'Value'        => 'Text',
     );
-    
+
     public function execute(WorkflowInstance $workflow)
     {
         if (!$target = $workflow->getTarget()) {

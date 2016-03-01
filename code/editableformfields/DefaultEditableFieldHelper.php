@@ -18,7 +18,7 @@ class DefaultEditableFieldHelper
 
         $fieldList->push($field);
     }
-    
+
     public function updateFormField($editableFormField, $field = null, $fieldType = 'TextField')
     {
         if (!$field) {

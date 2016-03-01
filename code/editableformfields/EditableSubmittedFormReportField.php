@@ -13,7 +13,7 @@ class EditableSubmittedFormReportField extends SubmittedFormReportField
     /**
      * Overidden to exclude certain fields (IE Save) from the export. Additionally,
      * we need to trim the result set of fields that don't exist in the field anymore, even if there
-     * are form submissions that have values for those non-existent fields. 
+     * are form submissions that have values for those non-existent fields.
      */
     public function export($fileName = null)
     {
@@ -26,7 +26,7 @@ class EditableSubmittedFormReportField extends SubmittedFormReportField
             $udf = DataObject::get_by_id("UserDefinedForm", $SQL_ID);
             if ($udf) {
                 $fileName = str_replace(' ', '_', $udf->MenuTitle . '-' . date('Y-m-d_H.i.s') . '.csv');
-                // we'll limit submissions to only those that are completed. 
+                // we'll limit submissions to only those that are completed.
                 $submissions = $udf->Submissions(); //'"SubmissionStatus" = \'Complete\'');
                 if ($submissions && $submissions->Count() > 0) {
 
