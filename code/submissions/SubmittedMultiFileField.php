@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A file uploaded on a {@link UserDefinedForm} and attached to a single 
+ * A file uploaded on a {@link UserDefinedForm} and attached to a single
  * {@link SubmittedForm}.
  *
  * @package userforms
@@ -9,9 +9,9 @@
 
 class SubmittedMultiFileField extends SubmittedFormField
 {
-    
+
     protected $attachments;
-    
+
     public function Attachments()
     {
         if ($this->attachments) {
@@ -28,9 +28,9 @@ class SubmittedMultiFileField extends SubmittedFormField
     }
 
     /**
-     * Return the value of this field for inclusion into things such as 
+     * Return the value of this field for inclusion into things such as
      * reports.
-     * 
+     *
      * @return string
      */
     public function getFormattedValue()
@@ -53,15 +53,15 @@ class SubmittedMultiFileField extends SubmittedFormField
                 );
             }
         }
-        
+
         if (count($parts)) {
             $string = '<p>' . implode('</p><p>', $parts) . '</p>';
             return DBField::create_field('HTMLText', $string);
         }
-        
+
         return false;
     }
-    
+
     /**
      * Return the value for this field in the CSV export.
      *
@@ -74,7 +74,7 @@ class SubmittedMultiFileField extends SubmittedFormField
 
     /**
      * Return the link for the file attached to this submitted form field.
-     * 
+     *
      * @return string
      */
     public function getLink()

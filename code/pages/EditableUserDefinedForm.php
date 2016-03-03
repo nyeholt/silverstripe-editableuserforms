@@ -8,7 +8,7 @@
  */
 class EditableUserDefinedForm extends UserDefinedForm
 {
-    
+
     const PENDING = 'Pending Approval';
     const COMPLETE = 'Complete';
 
@@ -45,12 +45,12 @@ class EditableUserDefinedForm extends UserDefinedForm
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
-        
+
 
         $fields->addFieldToTab('Root.FormOptions', CheckboxField::create('ShowSubmittedList', 'Show the list of this user\'s submissions'));
         $fields->addFieldToTab('Root.FormOptions', CheckboxField::create('ShowDraftList', 'Show the list of this user\'s draft submissions'));
 
-        
+
         $fields->addFieldToTab('Root.FormOptions', new CheckboxField('AllowEditingComplete', 'Allow "Complete" submissions to be re-edited'));
         $fields->addFieldToTab('Root.FormOptions', new CheckboxField('ShowSubmitButton', 'Show the submit button - if not checked, forms will be "submitted" as soon as all required fields are complete'));
         $fields->addFieldToTab('Root.FormOptions', new TextField('SubmitWarning', 'A warning to display to users when the submit button is clicked'));
@@ -65,7 +65,7 @@ class EditableUserDefinedForm extends UserDefinedForm
         foreach ($formFields as $editableField) {
             $options[$editableField->Name] = $editableField->Title;
         }
-        
+
         $fields->addFieldToTab('Root.FormOptions', $df = DropdownField::create('SubmissionTitleField', 'Title field to use for new submissions', $options));
         $df->setEmptyString('-- field --');
         $df->setRightTitle('Useful if submissions are to be listed somewhere and a sort field is required');
@@ -76,7 +76,7 @@ class EditableUserDefinedForm extends UserDefinedForm
             $field->setRightTitle('Workflow to use for making a submission complete');
             $fields->addFieldToTab('Root.FormOptions', $field);
         }
-        
+
         return $fields;
     }
 
@@ -140,7 +140,7 @@ class EditableUserDefinedForm extends UserDefinedForm
 
         return SubmittedForm::get()->filter($filter);
     }
-    
+
     public function getSubmissionWorkflow()
     {
         if ($this->WorkflowID) {
@@ -160,7 +160,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
         'cancelsubmission',
         'Form',
     );
-    
+
     protected $submission = null;
     protected $readonly = false;
     protected $formValues = array();
@@ -168,10 +168,10 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
     public function init()
     {
         parent::init();
-        
+
         Requirements::javascript('editableuserforms/javascript/editable-userforms.js');
     }
-    
+
     /**
      * If this form is configured to load an existing draft, do so here
      */
@@ -187,7 +187,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
         }
         return parent::index();
     }
-    
+
     /**
      * Action called when you want to edit an existing form submission
      *
@@ -286,7 +286,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
             $this->submission->exposeDataFields();
             $form->loadDataFrom($this->submission);
             $fields->push(new HiddenField('ResumeID', '', $this->submission->ID));
-            
+
             $workflowState = $this->submission->getWorkflowState();
             if ($workflowState !== false) {
                 $form->addExtraClass("workflow-review");
@@ -319,7 +319,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
             if (Member::currentUserID()) {
                 $actions->push($action = new FormAction('storesubmission', 'Save'));
                 $action->setAttribute('formnovalidate', 'formnovalidate');
-                
+
                 // $actions->push(new FormAction('cancelsubmission', 'Cancel', null, null, 'cancel'));
 
                 if ($this->ShowPreviewButton) {
@@ -328,7 +328,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                     $actions->push($action = new FormAction('previewpdfsubmission', 'PDF / Print'));
                     $action->setAttribute('formnovalidate', 'formnovalidate');
                 }
-                
+
                 if ($this->submission && $this->ShowDeleteButton) {
                     $actions->push($action = new FormAction('cancelsubmission', 'Delete'));
                     $action->setAttribute('formnovalidate', 'formnovalidate');
@@ -347,13 +347,13 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
         if (!isset($_REQUEST['action_process'])) {
             $form->unsetValidator();
         }
-        
+
         return $form;
     }
-    
+
     /**
      * Save a form submission as "Saved" but not yet completely submitted.
-     * 
+     *
      *
      * @param array $data
      * @param Form $form
@@ -422,14 +422,14 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                         }
                     }
                 }
-                
+
                 if ($this->data()->WorkflowID && $submission->SubmissionStatus == EditableUserDefinedForm::COMPLETE) {
                     $submission->SubmissionStatus = EditableUserDefinedForm::PENDING;
                 }
             }
 
             $submission->write();
-            
+
             if ($submission->SubmissionStatus == EditableUserDefinedForm::PENDING) {
                 singleton('WorkflowService')->startWorkflow($submission, $this->data()->WorkflowID);
             }
@@ -462,7 +462,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
 
     /**
      * Need to override the whole process method to be able to catch the fact
-     * that we might be editing a resumed entry 
+     * that we might be editing a resumed entry
      *
      * @param Array Data
      * @param Form Form
@@ -472,7 +472,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
     {
         Session::set("FormInfo.{$form->FormName()}.data", $data);
         Session::clear("FormInfo.{$form->FormName()}.errors");
-        
+
         foreach ($this->Fields() as $field) {
             $messages[$field->Name] = $field->getErrorMessage()->HTML();
             $formField = $field->getFormField();
@@ -491,13 +491,13 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                 }
             }
         }
-        
+
         if (Session::get("FormInfo.{$form->FormName()}.errors")) {
             Controller::curr()->redirectBack();
             return;
         }
-        
-        
+
+
         $submission = $this->processSubmission($data, $form);
         if ($submission) {
             if ($this->data()->WorkflowID) {
@@ -514,7 +514,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
             }
         }
 
-        // set a session variable from the security ID to stop people accessing 
+        // set a session variable from the security ID to stop people accessing
         // the finished method directly.
         if (!$this->DisableAuthenicatedFinishAction) {
             if (isset($data['SecurityID'])) {
@@ -530,11 +530,11 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                 }
             }
         }
-        
+
         if (!$this->DisableSaveSubmissions) {
             Session::set('userformssubmission'. $this->ID, $submission->ID);
         }
-        
+
         $referrer = (isset($data['Referrer'])) ? '?referrer=' . urlencode($data['Referrer']) : "";
         return $this->redirect($this->Link('finished') . $referrer . $this->config()->finished_anchor);
     }
@@ -574,7 +574,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
         $attachments = array();
 
         $submittedFields = ArrayList::create();
-        
+
         $titleField = $this->data()->SubmissionTitleField;
 
         foreach ($this->Fields() as $field) {
@@ -590,12 +590,12 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                 $submittedField = $submittedForm->getFormField($field->Name);
             }
 
-            // we want to do things this way to ensure that we have a submittedField - sometimes a field won't 
+            // we want to do things this way to ensure that we have a submittedField - sometimes a field won't
             // existing on a form re-edit (eg if the form changes)
             if (!$submittedField) {
                 $submittedField = $field->getSubmittedFormField();
             }
-            
+
             $submittedField->ParentID = $submittedForm->ID;
             $submittedField->Name = $field->Name;
             $submittedField->Title = $field->getField('Title');
@@ -616,12 +616,12 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                 if (in_array("EditableFileField", $field->getClassAncestry())) {
                     if (isset($_FILES[$field->Name])) {
                         $foldername = $field->getFormField()->getFolderName();
-                        
+
                         // create the file from post data
                         $upload = new Upload();
                         $file = new File();
                         $file->ShowInSearch = 0;
-                        
+
                         try {
                             $upload->loadIntoFile($_FILES[$field->Name], $file);
                         } catch (ValidationException $e) {
@@ -630,7 +630,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                             Controller::curr()->redirectBack();
                             return;
                         }
-                        
+
                         // write file to form field
                         $submittedField->UploadedFileID = $file->ID;
 
@@ -641,9 +641,9 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                     }
                 }
             }
-            
+
             $submittedField->extend('onPopulationFromField', $field);
-            
+
             if (!$this->DisableSaveSubmissions) {
                 $submittedField->write();
             }
@@ -657,11 +657,11 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
         );
 
         $this->extend('updateEmailData', $emailData, $attachments);
-        
+
         // email users on submit.
         if ($recipients = $this->FilteredEmailRecipients($data, $form)) {
             $email = new UserDefinedForm_SubmittedFormEmail($submittedFields);
-            
+
             if ($attachments) {
                 foreach ($attachments as $file) {
                     if ($file->ID != 0) {
@@ -681,7 +681,7 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                 $email->setBody($recipient->EmailBody);
                 $email->setTo($recipient->EmailAddress);
                 $email->setSubject($recipient->EmailSubject);
-                
+
                 if ($recipient->EmailReplyTo) {
                     $email->setReplyTo($recipient->EmailReplyTo);
                 }
@@ -697,12 +697,12 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                 // check to see if they are a dynamic reciever eg based on a dropdown field a user selected
                 if ($recipient->SendEmailToField()) {
                     $submittedFormField = $submittedFields->find('Name', $recipient->SendEmailToField()->Name);
-                    
+
                     if ($submittedFormField && is_string($submittedFormField->Value)) {
                         $email->setTo($submittedFormField->Value);
                     }
                 }
-                
+
                 // check to see if there is a dynamic subject
                 if ($recipient->SendEmailSubjectField()) {
                     $submittedFormField = $submittedFields->find('Name', $recipient->SendEmailSubjectField()->Name);
@@ -729,12 +729,12 @@ class EditableUserDefinedForm_Controller extends UserDefinedForm_Controller
                 }
             }
         }
-        
+
         $submittedForm->extend('updateAfterProcess');
 
         Session::clear("FormInfo.{$form->FormName()}.errors");
         Session::clear("FormInfo.{$form->FormName()}.data");
-        
+
 
         return $submittedForm;
     }

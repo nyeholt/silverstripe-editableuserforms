@@ -22,7 +22,7 @@ class EditableEmailFieldWithDefault extends EditableEmailField
         singleton('DefaultEditableFieldHelper')->updateFieldConfiguration($this, $fields);
         return $fields;
     }
-    
+
     public function getFormField()
     {
         $field = parent::getFormField();

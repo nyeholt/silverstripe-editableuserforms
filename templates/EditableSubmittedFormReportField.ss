@@ -12,7 +12,7 @@
 
 		<% loop Submissions %>
 			<div class="report">
-				<h4 class="submitted"><% _t('SUBMITTED', 'Submitted at') %> $LastEdited.Nice. 
+				<h4 class="submitted"><% _t('SUBMITTED', 'Submitted at') %> $LastEdited.Nice.
 					<% if can(Edit) %>
 					<a href="{$Top.Link}/deletesubmission/?id={$ID}" class="deleteSubmission"><% _t('DELETESUBMISSION', 'Delete Submission') %></a>
 					<% end_if %>
